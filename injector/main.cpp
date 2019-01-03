@@ -38,7 +38,7 @@ int main()
 	entry.dwSize = sizeof(entry);
 
 	Process32First(snap, &entry);
-	do 
+	do
 	{
 		constexpr auto mask =
 			PROCESS_QUERY_INFORMATION |
@@ -77,8 +77,7 @@ int main()
 
 		std::cout << "Injected" << std::endl;
 		return 0;
-	}
-	while (Process32Next(snap, &entry));
+	} while (Process32Next(snap, &entry));
 
 	std::cerr << "Didn't find " << exe << std::endl;
 

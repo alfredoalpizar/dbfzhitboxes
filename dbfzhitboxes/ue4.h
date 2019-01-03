@@ -71,5 +71,5 @@ class AHud
 {
 	char pad01[0x3D8];
 public:
-	UCanvas *Canvas;
+	UCanvas * Canvas;
 };
