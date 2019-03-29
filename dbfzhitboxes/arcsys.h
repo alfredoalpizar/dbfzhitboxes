@@ -101,7 +101,7 @@ public:
 	int entity_count() const
 	{
 #if USENEWPATCHOFFSETS
-		return *(int*)((char*)(this) + 0x598);
+		return *(int*)((char*)(this) + 0x4C8);
 #else
 		return *(int*)((char*)(this) + 0x590);
 #endif
@@ -110,7 +110,7 @@ public:
 	asw_entity **entity_list() const
 	{
 #if USENEWPATCHOFFSETS
-		return (asw_entity**)((char*)(this) + 0x1268);
+		return (asw_entity**)((char*)(this) + 0x1198);
 #else
 		return (asw_entity**)((char*)(this) + 0x1260);
 #endif
