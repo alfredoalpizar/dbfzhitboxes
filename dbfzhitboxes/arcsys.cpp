@@ -7,7 +7,7 @@ int asw_entity::get_pos_x() const
 {
 	using func_t = int(*)(const asw_entity*);
 	static sigscan sig("RED-Win64-Shipping.exe");
-	static const auto func = (func_t)(sig.sig("\x03\x83\xA0\x03\x00\x00\x48\x83\xC4\x20", "xxxxxxxxxx") - 0x3F);
+	static const auto func = (func_t)(sig.sig("\x03\x83\xA8\x03\x00\x00\x48\x83\xC4\x20", "xxxxxxxxxx") - 0x3F);
 	return func(this);
 }
 
@@ -16,7 +16,7 @@ int asw_entity::get_pos_y() const
 {
 	using func_t = int(*)(const asw_entity*);
 	static sigscan sig("RED-Win64-Shipping.exe");
-	static const auto func = (func_t)(sig.sig("\x03\x83\xA4\x03\x00\x00\x48\x83\xC4\x20", "xxxxxxxxxx") - 0x26);
+	static const auto func = (func_t)(sig.sig("\x03\x83\xAC\x03\x00\x00\x48\x83\xC4\x20", "xxxxxxxxxx") - 0x26);
 	return func(this);
 }
 
@@ -25,7 +25,7 @@ int asw_entity::pushbox_width() const
 	using func_t = int(*)(const asw_entity*);
 	static sigscan sig("RED-Win64-Shipping.exe");
 #if USENEWPATCHOFFSETS
-	static const auto func = (func_t)(sig.sig("\x8B\x81\x1C\x05\x00\x00\x48\x8B\xD9", "xxxxxxxxx") - 6);
+	static const auto func = (func_t)(sig.sig("\x8B\x81\x24\x05\x00\x00\x48\x8B\xD9", "xxxxxxxxx") - 6);
 #else
 	static const auto func = (func_t)(sig.sig("\x8B\x81\x18\x05\x00\x00\x48\x8B\xD9", "xxxxxxxxx") - 6);
 #endif
@@ -37,7 +37,7 @@ int asw_entity::pushbox_top() const
 	using func_t = int(*)(const asw_entity*);
 	static sigscan sig("RED-Win64-Shipping.exe");
 #if USENEWPATCHOFFSETS
-	static const auto func = (func_t)(sig.sig("\x8B\x81\x20\x05\x00\x00\x48\x8B\xD9", "xxxxxxxxx") - 6);
+	static const auto func = (func_t)(sig.sig("\x8B\x81\x28\x05\x00\x00\x48\x8B\xD9", "xxxxxxxxx") - 6);
 #else
 	static const auto func = (func_t)(sig.sig("\x8B\x81\x1C\x05\x00\x00\x48\x8B\xD9", "xxxxxxxxx") - 6);
 #endif
@@ -49,7 +49,7 @@ int asw_entity::pushbox_bottom() const
 	using func_t = int(*)(const asw_entity*);
 	static sigscan sig("RED-Win64-Shipping.exe");
 #if USENEWPATCHOFFSETS
-	static const auto func = (func_t)(sig.sig("\x8B\x81\x24\x05\x00\x00\x48\x8B\xD9", "xxxxxxxxx") - 6);
+	static const auto func = (func_t)(sig.sig("\x8B\x81\x2C\x05\x00\x00\x48\x8B\xD9", "xxxxxxxxx") - 6);
 #else
 	static const auto func = (func_t)(sig.sig("\x8B\x81\x20\x05\x00\x00\x48\x8B\xD9", "xxxxxxxxx") - 6);
 #endif

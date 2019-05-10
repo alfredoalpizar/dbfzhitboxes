@@ -20,7 +20,7 @@ class asw_entity
 public:
 	int angle() const
 	{
-		return *(int*)((char*)(this) + 0x3AC);
+		return *(int*)((char*)(this) + 0x3B4);
 	}
 
 	float angle_rads() const
@@ -31,7 +31,7 @@ public:
 	int scale_x() const
 	{
 #if USENEWPATCHOFFSETS
-		return *(int*)((char*)(this) + 0x3BC);
+		return *(int*)((char*)(this) + 0x3C4);
 #else
 		return *(int*)((char*)(this) + 0x3B8);
 #endif
@@ -40,7 +40,7 @@ public:
 	int scale_y() const
 	{
 #if USENEWPATCHOFFSETS
-		return *(int*)((char*)(this) + 0x3C0);
+		return *(int*)((char*)(this) + 0x3C8);
 #else
 		return *(int*)((char*)(this) + 0x3BC);
 #endif
@@ -48,7 +48,7 @@ public:
 
 	int direction() const
 	{
-		return *(int*)((char*)(this) + 0x39C);
+		return *(int*)((char*)(this) + 0x3A4);
 	}
 
 	bool is_counterhit() const
