@@ -49,3 +49,35 @@ void UCanvas::K2_DrawText(
 {
 	K2_DrawText_internal(this, RenderFont, RenderText, ScreenPosition, RenderColor, Kerning, ShadowColor, ShadowOffset, bCentreX, bCentreY, bOutlined, OutlineColor);
 }
+
+UEngine* UEngine::EnginePtr = nullptr;
+
+float UEngine::GetFixedFrameRate()
+{
+	return *(float*)((char*)(this) + 0x64C);
+}
+
+void UEngine::SetFixedFrameRate(float NewFixedFrameRate)
+{
+	float* FixedFrameRatePtr = (float*)((char*)(this) + 0x64C);
+	*FixedFrameRatePtr = NewFixedFrameRate;
+}
+
+UEngine* UEngine::Get()
+{
+	if (EnginePtr == nullptr)
+	{
+		sigscan sig("RED-Win64-Shipping.exe");
+		uintptr_t AHUD_GetTextSizePtr = sig.sig("\x48\x89\x5c\x24\x00\x48\x89\x6c\x24\x00\x48\x89\x74\x24\x00\x57\x48\x83\xEC\x00\x49\x8B\x00\x49\x8B\x00\x48\x8B\x00\x48\x8B\x00\xE8\x00\x00\x00\x00\x84\xC0\x74\x3B", "xxxx?xxxx?xxxx?xxxx?xx?xx?xx?xx?x????xxxx");
+		
+		uintptr_t GetMediumFontCallSite = AHUD_GetTextSizePtr + 0x33; // AHUD::GetTextSize calls GEngine->GetMediumFont() 0x33 bytes into it
+		uintptr_t GetMediumFontRelativePtr = *(int*)(GetMediumFontCallSite + 1); // One Byte for the Call Opcode (E8)
+		int FunctionCallSize = 5; // call UEngine::GetMediumFont
+		uintptr_t GetMediumFontFunction = GetMediumFontCallSite + GetMediumFontRelativePtr + FunctionCallSize;
+
+		uintptr_t GEngineRelativePtr = *(int*)(GetMediumFontFunction + 3); // Three bytes for mov rax from mov rax, GEngineRelativePtr
+		int PointerMoveSize = 7; //mov rax, GEngineRelativePtr
+		EnginePtr = *(UEngine**)(GetMediumFontFunction + GEngineRelativePtr + PointerMoveSize);
+	}
+	return EnginePtr;
+}

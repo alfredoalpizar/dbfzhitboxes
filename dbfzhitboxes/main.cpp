@@ -5,6 +5,10 @@
 #include <Psapi.h>
 #include <stdexcept>
 #include <array>
+#include <iostream>
+#include <algorithm>
+
+bool G_ShowBoxes = true;
 
 extern "C"
 {
@@ -101,6 +105,75 @@ void draw_pushbox(AHud *hud, const asw_entity *entity)
 		hud->Canvas->K2_DrawLine(corners[i], corners[(i + 1) % 4], 2.F, FLinearColor(1.F, 1.F, 0.F, 1.F));
 }
 
+void SetFixedFrameRate(float NewFixedFrameRate)
+{
+	std::cout << "New Fixed Frame Rate = " << NewFixedFrameRate << std::endl;
+}
+
+void HandleKeyPresses()
+{
+	static UEngine* GEngine = UEngine::Get();
+	if (GEngine == nullptr)
+	{
+		return;
+	}
+
+	static float CurrentFixedFrameRate = 60.0f;
+	static float FrameRateStepSize = 15.0f;
+	static float SmallFrameRateStepSize = 5.0f;
+	static float MinFrameRate = 5.0f;
+	static float MaxFrameRate = 240.0f;
+
+	static bool bControlPressed = false;
+	static bool bHPressed = false;
+	static bool bUpPressed = false;
+	static bool bDownPressed = false;
+	static bool bLeftPressed = false;
+	static bool bRightPressed = false;
+	
+	bool bNewControlPressed = GetKeyState(VK_CONTROL) & 0x8000;
+	bool bNewHPressed = GetKeyState('H') & 0x8000;
+	bool bNewUpPressed = GetKeyState(VK_UP) & 0x8000;
+	bool bNewDownPressed = GetKeyState(VK_DOWN) & 0x8000;
+	bool bNewLeftPressed = GetKeyState(VK_LEFT) & 0x8000;
+	bool bNewRightPressed = GetKeyState(VK_RIGHT) & 0x8000;
+	
+	if (bControlPressed)
+	{
+		if (bHPressed && !bNewHPressed) // H Released
+		{
+			G_ShowBoxes = !G_ShowBoxes; // Toggle Hitbox Display
+		}
+		else if (bUpPressed && !bNewUpPressed) // Up Released
+		{
+			CurrentFixedFrameRate = min(CurrentFixedFrameRate + FrameRateStepSize, MaxFrameRate);
+			GEngine->SetFixedFrameRate(CurrentFixedFrameRate);
+		}
+		else if (bDownPressed && !bNewDownPressed) // Down Released
+		{
+			CurrentFixedFrameRate = max(CurrentFixedFrameRate - FrameRateStepSize, MinFrameRate);
+			GEngine->SetFixedFrameRate(CurrentFixedFrameRate);
+		}
+		else if (bRightPressed && !bNewRightPressed) // Right Released
+		{
+			CurrentFixedFrameRate = min(CurrentFixedFrameRate + SmallFrameRateStepSize, MaxFrameRate);
+			GEngine->SetFixedFrameRate(CurrentFixedFrameRate);
+		}
+		else if (bLeftPressed && !bNewLeftPressed) // Left Released
+		{
+			CurrentFixedFrameRate = max(CurrentFixedFrameRate - SmallFrameRateStepSizeFrameRateStepSize, MinFrameRate);
+			GEngine->SetFixedFrameRate(CurrentFixedFrameRate);
+		}
+	}
+
+	bControlPressed = bNewControlPressed;
+	bHPressed = bNewHPressed;
+	bUpPressed = bNewUpPressed;
+	bDownPressed = bNewDownPressed;
+	bLeftPressed = bNewLeftPressed;
+	bRightPressed = bNewRightPressed;
+}
+
 extern "C" void draw_overlay(AHud *hud)
 {
 	if (hud->Canvas == nullptr)
@@ -110,16 +183,22 @@ extern "C" void draw_overlay(AHud *hud)
 	if (engine == nullptr)
 		return;
 
-	for (auto entidx = 0; entidx < engine->entity_count(); entidx++)
-	{
-		const auto *entity = engine->entity_list()[entidx];
-		draw_pushbox(hud, entity);
-		draw_hithurtboxes(hud, entity);
+	HandleKeyPresses();
 
-		if (entity->attached() != nullptr)
+	if (G_ShowBoxes)
+	{
+		for (auto entidx = 0; entidx < engine->entity_count(); entidx++)
 		{
-			draw_pushbox(hud, entity->attached());
-			draw_hithurtboxes(hud, entity->attached(), entity);
+			const auto* entity = engine->entity_list()[entidx];
+
+			draw_pushbox(hud, entity);
+			draw_hithurtboxes(hud, entity);
+
+			if (entity->attached() != nullptr)
+			{
+				draw_pushbox(hud, entity->attached());
+				draw_hithurtboxes(hud, entity->attached(), entity);
+			}
 		}
 	}
 }

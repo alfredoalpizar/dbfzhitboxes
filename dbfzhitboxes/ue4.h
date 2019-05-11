@@ -73,3 +73,15 @@ class AHud
 public:
 	UCanvas * Canvas;
 };
+
+class UEngine
+{
+public:
+	static UEngine* Get();
+
+	float GetFixedFrameRate();
+	void SetFixedFrameRate(float NewFixedFrameRate);
+
+private:
+	static UEngine* EnginePtr;
+};
