@@ -161,7 +161,7 @@ void HandleKeyPresses()
 		}
 		else if (bLeftPressed && !bNewLeftPressed) // Left Released
 		{
-			CurrentFixedFrameRate = max(CurrentFixedFrameRate - SmallFrameRateStepSizeFrameRateStepSize, MinFrameRate);
+			CurrentFixedFrameRate = max(CurrentFixedFrameRate - SmallFrameRateStepSize, MinFrameRate);
 			GEngine->SetFixedFrameRate(CurrentFixedFrameRate);
 		}
 	}
