@@ -76,7 +76,7 @@ asw_engine *asw_engine::get()
 		using func_t = asw_engine*(*)();
 		static sigscan sig("RED-Win64-Shipping.exe");
 #if USENEWPATCHOFFSETS
-		static const auto func = (func_t)(sig.sig("\x75\x0D\x48\x8B\x83\x78\x0B\x00\x00", "xxxxxxxxx") - 0x48);
+		static const auto func = (func_t)(sig.sig("\x75\x0D\x48\x8B\x83\xA0\x0B\x00\x00", "xxxxxxxxx") - 0x48);
 #else
 		static const auto func = (func_t)(sig.sig("\x75\x0D\x48\x8B\x83\x60\x0B\x00\x00", "xxxxxxxxx") - 0x48);
 #endif
