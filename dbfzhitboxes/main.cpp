@@ -23,7 +23,9 @@ void draw_hithurtboxes(AHud *hud, const asw_entity *entity, const asw_entity *pa
 		const auto &box = entity->hithurtbox_data()[boxidx];
 
 		// Don't show inactive hitboxes
-		if (box.type == 1 && (parent != nullptr ? !parent->is_active() : !entity->is_active()))
+		// This check is causing issues in season 3 
+		// I'll look into it more when I get chance but disable for now. Doesn't have any huge impact.
+		if (box.type == 1 && false) //(parent != nullptr ? !parent->is_active() : !entity->is_active()))
 			continue;
 		else if (box.type == 0 && entity->is_invuln())
 			continue;

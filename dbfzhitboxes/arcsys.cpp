@@ -60,7 +60,7 @@ bool asw_entity::is_active() const
 {
 	using func_t = bool(*)(const asw_entity*, int);
 	static sigscan sig("RED-Win64-Shipping.exe");
-	static const auto func = (func_t)(sig.sig("\xC1\xE8\x08\xA8\x01\x74\x3B", "xxxxxxx") - 0x6C);
+	static const auto func = (func_t)(sig.sig("\xC1\xE8\x08\xA8\x01\x74\x40", "xxxxxxx") - 0x6C);
 
 	// Still show as active after a hit occurs
 	const auto hit = *(int*)((char*)(this) + 0x728);
@@ -76,7 +76,7 @@ asw_engine *asw_engine::get()
 		using func_t = asw_engine*(*)();
 		static sigscan sig("RED-Win64-Shipping.exe");
 #if USENEWPATCHOFFSETS
-		static const auto func = (func_t)(sig.sig("\x75\x0D\x48\x8B\x83\xA0\x0B\x00\x00", "xxxxxxxxx") - 0x48);
+		static const auto func = (func_t)(sig.sig("\x75\x0D\x48\x8B\x83\xA8\x0B\x00\x00", "xxxxxxxxx") - 0x48);
 #else
 		static const auto func = (func_t)(sig.sig("\x75\x0D\x48\x8B\x83\x60\x0B\x00\x00", "xxxxxxxxx") - 0x48);
 #endif
